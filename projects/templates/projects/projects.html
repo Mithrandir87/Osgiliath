@@ -2,9 +2,14 @@
 
 {% block content %}
 {{ message }}
+<h1>Projects</h1>
 
-<h1>List of projects</h1>
+<ul>
+
 {% for project in projects %}
-<h3>{{project.title}}</h3>
+<li>Title>: <a href="{% url 'project' project.id %}">{{ project.title }}</a>--- {{ project.description }}</li>
 {% endfor %}
+
+</ul>
+
 {% endblock content %}
