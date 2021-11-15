@@ -1,8 +1,9 @@
-from django.shortcuts import redirect, render
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
+
 from .models import Profile
 
 # Create your views here.
@@ -21,6 +22,10 @@ def userProfile(request, pk):
 
 
 def loginPage(request):
+    page = 'login'
+
+    context = {'page': page}
+
     if request.user.is_authenticated:
         return redirect('profiles')
 
@@ -41,8 +46,14 @@ def loginPage(request):
         else:
             messages.error(request, 'Username OR password is incorrect')
 
-    return render(request, 'users/login_register.html')
+    return render(request, 'users/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+
+def registerUser(request):
+    page = 'register'
+    context = {'page': page}
+    return render(request, 'users/login_register.html', context)
