@@ -4,7 +4,12 @@
 
 {% if page == 'register' %}
 <h1>Register User</h1>
+<form action="{% url 'register' %}"  method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Register User">
 
+</form>
 {% else %}
 <form action="{% url 'login' %}" method="POST">
     {% csrf_token %}

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
@@ -55,5 +56,21 @@ def logoutUser(request):
 
 def registerUser(request):
     page = 'register'
-    context = {'page': page}
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+
+            messages.success(request, 'User account was created!')
+
+            login(request, user)
+            return redirect('profiles')
+        else:
+            messages.error(request, 'An error has occurred during registration')
+
+    context = {'page': page, 'form' : form}
     return render(request, 'users/login_register.html', context)
